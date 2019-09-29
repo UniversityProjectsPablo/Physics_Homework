@@ -3,6 +3,7 @@
 #include "ModulePhysics.h"
 #include "math.h"
 #include "Box2D/Box2D/Box2D.h"
+#include "Box2D/Box2D.h"
 
 // TODO 1: Include Box 2 header and library
 #ifdef _DEBUG
@@ -32,17 +33,23 @@ bool ModulePhysics::Start()
 	// - You need init the world in the constructor
 	// - Remember to destroy the world after using it
 	b2Vec2 gravity(0.0f, -10.0f);
-	myWorld = new b2World(gravity);
+	world = new b2World(gravity);
 
 	// TODO 4: Create a a big static circle as "ground"
-	b2BodyDef groundBodyDef;
-	groundBodyDef.position.Set(0.0f, -10.0f);
-	b2Body* groundBody = myWorld->CreateBody(&groundBodyDef);
-	b2CircleShape groundCircle;
-	groundCircle.m_p.Set(10, 10);
-	groundCircle.m_radius = 0.5f;
+	int x=13, y=10;
+	float radius=8.0f;
+	b2BodyDef body_def;
+	body_def.type = b2_staticBody; // or b2_dynamicBody
+	body_def.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+	b2Body* body = world->CreateBody(&body_def);
 
-	groundBody->CreateFixture(&groundCircle, 0.0f);
+	b2CircleShape shape;
+	shape.m_radius = PIXEL_TO_METERS(radius);
+
+	b2FixtureDef fixture;
+	fixture.shape = &shape;
+	body->CreateFixture(&fixture);
+
 	return true;
 }
 
@@ -56,7 +63,10 @@ update_status ModulePhysics::PreUpdate()
 
 	for (int32 i = 0; i < 60; ++i)
 	{
-		myWorld->Step(timeStep, velocityIterations, positionIterations);
+		world->Step(timeStep, velocityIterations, positionIterations);
+		//b2Vec2 position = body->GetPosition();
+		//float32 angle = body->GetAngle();
+		//printf("%4.2f %4.2f %4.2f\n", position.x, position.y, angle);
 	}
 
 	return UPDATE_CONTINUE;
@@ -76,7 +86,7 @@ update_status ModulePhysics::PostUpdate()
 
 	// Bonus code: this will iterate all objects in the world and draw the circles
 	// You need to provide your own macro to translate meters to pixels
-	/*
+	
 	for(b2Body* b = world->GetBodyList(); b; b = b->GetNext())
 	{
 		for(b2Fixture* f = b->GetFixtureList(); f; f = f->GetNext())
@@ -94,7 +104,7 @@ update_status ModulePhysics::PostUpdate()
 				// You will have to add more cases to draw boxes, edges, and polygons ...
 			}
 		}
-	}*/
+	}
 
 	return UPDATE_CONTINUE;
 }
@@ -106,7 +116,7 @@ bool ModulePhysics::CleanUp()
 	LOG("Destroying physics world");
 
 	// Delete the whole physics world!
-	delete  myWorld;
+	delete  world;
 
 	return true;
 }
