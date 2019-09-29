@@ -4,11 +4,13 @@
 #include "math.h"
 #include "Box2D/Box2D/Box2D.h"
 #include "Box2D/Box2D.h"
+#include "ModuleInput.h"
 
 // TODO 1: Include Box 2 header and library
 #ifdef _DEBUG
 #pragma comment(lib, "Box2D/libx86/Debug/Box2D.lib")
 #endif //_DEBUG
+
 
 #ifdef _RELEASE
 #pragma comment(lib, "Box2D/libx86/Release/Box2D.lib")
@@ -36,7 +38,7 @@ bool ModulePhysics::Start()
 	world = new b2World(gravity);
 
 	// TODO 4: Create a a big static circle as "ground"
-	int x=13, y=10;
+	int x=13, y=12;
 	float radius=8.0f;
 	b2BodyDef body_def;
 	body_def.type = b2_staticBody; // or b2_dynamicBody
@@ -80,6 +82,25 @@ update_status ModulePhysics::PostUpdate()
 
 	if(App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
+
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	{
+		int x = App->input->GetMouseX(), y = App->input->GetMouseY(); //Not working
+		int x = 13, y = 2;
+		float radius = 0.5f;
+		b2BodyDef body_def;
+		body_def.type = b2_dynamicBody; 
+		body_def.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+		b2Body* body = world->CreateBody(&body_def);
+
+		b2CircleShape dynshape;
+		dynshape.m_radius = PIXEL_TO_METERS(radius);
+
+		b2FixtureDef fixture;
+		fixture.shape = &dynshape;
+		body->CreateFixture(&fixture);		
+
+	}
 
 	if(!debug)
 		return UPDATE_CONTINUE;
