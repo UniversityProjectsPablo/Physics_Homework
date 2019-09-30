@@ -39,7 +39,7 @@ bool ModulePhysics::Start()
 
 	// TODO 4: Create a a big static circle as "ground"
 	int x = 500, y = 450;
-	float radius = 250.0f;
+	float radius = 270.0f;
 	b2BodyDef body_def;
 	body_def.type = b2_staticBody; // or b2_dynamicBody
 	body_def.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
@@ -86,7 +86,8 @@ update_status ModulePhysics::PostUpdate()
 
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
-		float radius = 20.0f;
+		//float radius = 20.0f; 
+		float radius = rand() % 30 + 5; //Random ball size
 		b2BodyDef body_def;
 		body_def.type = b2_dynamicBody;
 		body_def.position.Set(PIXEL_TO_METERS(App->input->GetMouseX()), PIXEL_TO_METERS(App->input->GetMouseY()));
