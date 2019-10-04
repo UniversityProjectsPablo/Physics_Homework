@@ -83,7 +83,21 @@ update_status ModulePhysics::PostUpdate()
 	if(App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 	{
 		// TODO 1: When pressing 2, create a box on the mouse position
+		b2BodyDef body;
+		body.type = b2_dynamicBody;
+		float radius = PIXEL_TO_METERS(25);
+		body.position.Set(PIXEL_TO_METERS(App->input->GetMouseX()), PIXEL_TO_METERS(App->input->GetMouseY()));
 
+		b2Body* b = world->CreateBody(&body);
+
+		b2PolygonShape box;
+		box.SetAsBox(1, 1);
+		b2FixtureDef fixture;
+		fixture.shape = &box;
+		fixture.density = 1.0f;
+		fixture.friction = 0.3f;
+
+		b->CreateFixture(&fixture);
 		// TODO 2: To have the box behave normally, set fixture's density to 1.0f
 	}
 
@@ -91,7 +105,8 @@ update_status ModulePhysics::PostUpdate()
 	{
 		// TODO 3: Create a chain shape using those vertices
 		// remember to convert them from pixels to meters!
-		/*
+		b2Vec2 vec[12];
+
 		int points[24] = {
 			-38, 80,
 			-44, -54,
@@ -106,7 +121,24 @@ update_status ModulePhysics::PostUpdate()
 			-25, 13,
 			-9, 72
 		};
-		*/
+		
+		for (int i = 0; i < 12; i++) 
+		{
+			vec[i].Set(PIXEL_TO_METERS(points[i * 2]), PIXEL_TO_METERS(points[i * 2 + 1]));
+		}		
+		
+		b2ChainShape chain;		chain.CreateLoop(vec, 12);
+		b2BodyDef body;
+		body.type = b2_dynamicBody;
+		body.position.Set(PIXEL_TO_METERS(App->input->GetMouseX()), PIXEL_TO_METERS(App->input->GetMouseY()));
+		
+		b2Body* b = world->CreateBody(&body);
+
+		b2FixtureDef fixture;
+		fixture.shape = &chain;
+		fixture.density = 1.0f;
+
+		b->CreateFixture(&fixture);
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
