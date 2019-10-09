@@ -233,3 +233,8 @@ bool ModulePhysics::CleanUp()
 
 	return true;
 }
+
+void ModulePhysics::createCircle()
+{
+
+}
