@@ -62,22 +62,6 @@ update_status ModulePhysics::PreUpdate()
 // 
 update_status ModulePhysics::PostUpdate()
 {
-	// On space bar press, create a circle on mouse position
-	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-	{
-		createCircle(25);
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-	{
-		createRectangle();
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
-	{
-		createChain();
-	}
-
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
 
@@ -193,7 +177,6 @@ void ModulePhysics::createRectangle()
 	// TODO 1: When pressing 2, create a box on the mouse position
 	b2BodyDef body;
 	body.type = b2_dynamicBody;
-	float radius = PIXEL_TO_METERS(25);
 	body.position.Set(PIXEL_TO_METERS(App->input->GetMouseX()), PIXEL_TO_METERS(App->input->GetMouseY()));
 
 	b2Body* b = world->CreateBody(&body);
@@ -204,7 +187,7 @@ void ModulePhysics::createRectangle()
 	fixture.shape = &box;
 	fixture.density = 1.0f;
 	fixture.friction = 0.3f;
-
+	
 	b->CreateFixture(&fixture);
 	// TODO 2: To have the box behave normally, set fixture's density to 1.0f
 }
@@ -247,4 +230,9 @@ void ModulePhysics::createChain()
 	fixture.density = 1.0f;
 
 	b->CreateFixture(&fixture);
+}
+
+float ClassPosition::GetPosition()
+{
+	
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
+#include <utility>
 
 #define GRAVITY_X 0.0f
 #define GRAVITY_Y -7.0f
@@ -18,7 +19,10 @@ class b2Body;
 // and has a method to request the position
 // then write the implementation in the .cpp
 // Then make your circle creation function to return a pointer to that class
+class ClassPosition {
+	b2Body* b2Body;
 
+};
 
 class ModulePhysics : public Module
 {
