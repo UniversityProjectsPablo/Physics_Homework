@@ -259,8 +259,19 @@ bool PhysBody::Contains(int x, int y) const
 {
 	// TODO 1: Write the code to return true in case the point
 	// is inside ANY of the shapes contained by this body
+	bool ret = false;
+	b2Vec2 point(x, y);
+	b2Transform transformation;
+	transformation.SetIdentity();
 
-	return false;
+	for (b2Fixture* fixture = body->GetFixtureList(); fixture && ret == false; fixture->GetNext())
+	{
+		ret = fixture->GetShape()->TestPoint(point.x, point.y);
+	}
+
+	body->GetTransform();
+
+	return ret;
 }
 
 int PhysBody::RayCast(int x1, int y1, int x2, int y2, float& normal_x, float& normal_y) const
