@@ -43,7 +43,10 @@ update_status ModuleSceneIntro::Update()
 	plane.Render();
 	// TODO 6: Draw a sphere of 0.5f radius around the center
 	// Draw somewhere else a cube and a cylinder in wireframe
-	
+	Sphere sphere;
+	sphere.radius = 0.5f;
+	sphere.SetPos(0, 0, 0);
+	sphere.Render();
 
 	return UPDATE_CONTINUE;
 }
