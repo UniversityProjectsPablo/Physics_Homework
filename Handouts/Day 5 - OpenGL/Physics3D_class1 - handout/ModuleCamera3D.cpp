@@ -50,37 +50,33 @@ update_status ModuleCamera3D::Update()
 		Position.z += move;
 		App->camera->Reference.z += move;
 	}
-
-
+	// TODO 4: Make the camera go forward (w) and backward with (s)
+	// Note that the vectors X/Y/Z contain the current axis of the camera
+	// you can read them to modify Position
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 	{
 		Position.y += move;
 		App->camera->Reference.y += move;
-	}		
+	}
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 	{
 		Position.y -= move;
 		App->camera->Reference.y -= move;
 	}
+	// TODO 5: Make the camera go left (a) and right with (d)
+	// Note that the vectors X/Y/Z contain the current axis of the camera
+	// you can read them to modify Position
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
 		Position.x -= move;
 		App->camera->Reference.x -= move;
-	}		
+	}
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
 		Position.x += move;
 		App->camera->Reference.x += move;
 	}
 
-	// TODO 4: Make the camera go forward (w) and backward with (s)
-	// Note that the vectors X/Y/Z contain the current axis of the camera
-	// you can read them to modify Position
-
-	// TODO 5: Make the camera go left (a) and right with (d)
-	// Note that the vectors X/Y/Z contain the current axis of the camera
-	// you can read them to modify Position
-	
 	// Mouse motion ----------------
 	if(App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
@@ -88,6 +84,12 @@ update_status ModuleCamera3D::Update()
 		int dy = -App->input->GetMouseYMotion();
 
 		// TODO (Homework): Rotate the camera with the mouse
+		vec3 Forward = -Z;
+
+		Forward = rotate(Forward, dx, Y);
+		Forward = rotate(Forward, dy, X);
+
+		LookAt(Forward + Position);
 	}
 
 	// Recalculate matrix -------------
